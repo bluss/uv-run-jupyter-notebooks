@@ -26,9 +26,7 @@
 # ]
 # ///
 
-# %% [markdown]
-# ## `uv run --script` jupytext notebook with embedded dependencies
-# %%
+# %% jupyter={"source_hidden": true}
 def _start_jupyterlab():
     "start this file in jupyterlab (if not already there)"
     import os
@@ -42,6 +40,9 @@ def _start_jupyterlab():
     jupyterlab.labapp.launch_new_instance(argv=[__file__])
     raise SystemExit(0)
 _start_jupyterlab()
+
+# %% [markdown]
+# ## `uv run --script` jupytext notebook with embedded dependencies
 
 # %%
 import sys
