@@ -28,6 +28,23 @@
 
 # %% [markdown]
 # ## `uv run --script` jupytext notebook with embedded dependencies
+# %%
+def _start_jupyterlab():
+    "start this file in jupyterlab (if not already there)"
+    import os
+    # check if we are already in jupyterlab
+    if __name__ != "__main__" or os.environ.get("JPY_SESSION_NAME", ""):
+        return
+    import signal
+    import subprocess
+    # turn off Ctrl-C for this particular process
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    # setup the jupytext configuration
+    environment = os.environ.copy()
+    environment["JUPYTER_CONFIG_DIR"] = "jupyter"
+    subprocess.run(["jupyter-lab", __file__], check=True, env=environment)
+    raise SystemExit(0)
+_start_jupyterlab()
 
 # %%
 import sys
@@ -44,21 +61,5 @@ sns.pairplot(data=df, hue="species");
 
 # %%
 
-# %%
-def _start_jupyterlab():
-    "start this file in jupyterlab (if not already there)"
-    import os
-    if __name__ != "__main__" or os.environ.get("JPY_SESSION_NAME", ""):
-        return
-    import signal
-    import subprocess
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
-    environment = os.environ.copy()
-    environment["JUPYTER_CONFIG_DIR"] = "jupyter"
-    subprocess.run(["jupyter-lab", __file__], check=True, env=environment)
-_start_jupyterlab()
-
-
-# %%
 
 # %%
