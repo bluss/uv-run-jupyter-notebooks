@@ -32,17 +32,17 @@
 def _start_jupyterlab():
     "start this file in jupyterlab (if not already there)"
     import os
+    import sys
     # check if we are already in jupyterlab
     if __name__ != "__main__" or os.environ.get("JPY_SESSION_NAME", ""):
         return
-    import signal
-    import subprocess
-    # turn off Ctrl-C for this particular process
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
     # setup the jupytext configuration
     environment = os.environ.copy()
     environment["JUPYTER_CONFIG_DIR"] = "jupyter"
-    subprocess.run(["jupyter-lab", __file__], check=True, env=environment)
+    # start current file
+    sys.argv[:] = [sys.argv[0], __file__]
+    import jupyterlab.labapp
+    jupyterlab.labapp.launch_new_instance()
     raise SystemExit(0)
 _start_jupyterlab()
 
