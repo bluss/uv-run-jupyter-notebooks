@@ -37,8 +37,7 @@ def _start_jupyterlab():
     if __name__ != "__main__" or os.environ.get("JPY_SESSION_NAME", ""):
         return
     # setup the jupytext configuration
-    environment = os.environ.copy()
-    environment["JUPYTER_CONFIG_DIR"] = "jupyter"
+    os.environ["JUPYTER_CONFIG_DIR"] = "jupyter"
     # start current file
     sys.argv[:] = [sys.argv[0], __file__]
     import jupyterlab.labapp
