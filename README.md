@@ -18,11 +18,11 @@ You can run them like this:
 and lets `uv run --script` read it.
 
 But we need to add another function into the script itself that starts
-Jupyterlab. This could still be the best solution, because dependencies are
-clearly declared in the file.
+Jupyter Notebok. This could still be the best solution, because dependencies
+are clearly declared in the file.
 
 It's nice to see that `jupytext` notebook metadata and the script metadata
-coexists, and is preserved correctly when editing the notebook in Jupyterlab.
+coexists, and is preserved correctly when editing the notebook in Jupyter.
 
 
 ## `nb2.py`
@@ -45,11 +45,15 @@ Jupytext is a jupyter extension that enables notebooks to be saved as plaintext
 Python files, which is very useful for many projects. The examples here make
 sure to install Jupytext so that Jupyterlab opens our .py notebooks directly.
 
-An unfortunate override is needed for Jupytext - we need to configure Jupyterlab
-so that it opens .py files as notebooks. Normally a Jupytext user will have
-already done this configuration, but here we want to enable it by force and
-automatically. That's why there is a thing to set `JUPYTER_CONFIG_DIR` in
-`nb1.py`.
+An unfortunate override is needed for Jupytext - we need to configure Jupyter
+Notebook or Jupyterlab so that it opens .py files as notebooks. Normally a
+Jupytext user will have already done this configuration, but here we want to
+enable it by force and automatically.
+
+In `nb1.py` we use an url query string `?factory=Notebook` to force the notebook
+interface. No config override is necessary (but is still useful for usability).
+
+In `nb2.py` there's a thing instead to set `JUPYTER_CONFIG_DIR`.
 
 To avoid this problem, you can just run and set this config for your user in
 general:
@@ -58,5 +62,5 @@ general:
 uvx --from jupytext jupytext-config set-default-viewer python
 ```
 
-but note that this changes your default viewer for python files - not a good
-idea if you don't normally use jupytext. (But you should!)
+but note that this changes your default viewer for python files - maybe not a
+good idea if you don't normally use jupytext. (But you should!)
