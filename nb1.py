@@ -13,33 +13,34 @@
 #     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
-#   title: Hey
+#   title: Self-starting jupytext inline script dependencies notebook
 # ---
 
 # %%
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "jupyterlab>=4.2",
+#     "notebook>=7.2",
 #     "jupytext>=1.16.0",
 #     "seaborn>=0.13",
 # ]
 # ///
 
 # %% jupyter={"source_hidden": true}
-def _start_jupyterlab():
-    "start this file in jupyterlab (if not already there)"
+def _start_notebook_if_needed():
     import os
-    # check if we are already in jupyterlab
-    if __name__ != "__main__" or os.environ.get("JPY_SESSION_NAME", ""):
+    # check if we are already in jupyter
+    # JPY_PARENT_PID set by jupyter-client, VSCODE_PID set by by vscode
+    if os.environ.get("JPY_PARENT_PID", "") or os.environ.get("VSCODE_PID", ""):
         return
-    # setup the jupytext configuration
-    os.environ["JUPYTER_CONFIG_DIR"] = "jupyter"
-    # start current file
-    import jupyterlab.labapp
-    jupyterlab.labapp.launch_new_instance(argv=[__file__])
+    # start current file -- with an url and query string
+    import urllib.parse
+    import notebook.app
+    url_arg = '--JupyterNotebookApp.default_url='
+    url_arg += "/notebooks/" + urllib.parse.quote(os.path.basename(__file__)) + "?factory=Notebook"
+    notebook.app.launch_new_instance(argv=[url_arg])
     raise SystemExit(0)
-_start_jupyterlab()
+_start_notebook_if_needed()
 
 # %% [markdown]
 # ## `uv run --script` jupytext notebook with embedded dependencies
@@ -59,5 +60,3 @@ sns.pairplot(data=df, hue="species");
 
 # %%
 
-
-# %%
